@@ -10,14 +10,11 @@ const coinValues = [
 const countCoinsReduce = totalCents => {
   const coinCounts = coinValues.reduce((amountsObject, coinObject) => {
     if (totalCents > coinObject.coinValue) {
-      amountsObject.push({
-        coinType: coinObject.coinType,
-        coinAmount: Math.floor(totalCents / coinObject.coinValue),
-      });
+      amountsObject[coinObject.coinType] = Math.floor(totalCents / coinObject.coinValue);
       totalCents = (totalCents % coinObject.coinValue);
     }
     return amountsObject;
-  }, []);
+  }, {});
 
   return coinCounts;
 }
