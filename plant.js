@@ -37,8 +37,20 @@ window.onload = function () {
   // Note that we only use one of our functions to alter soil. 
   // You can easily add more.
   document.getElementById('feed').onclick = function () {
+    const newState = stateControl(feed);
+    document.getElementById('soil-value').innerText = `Soil: ${newState.soil}`;
+  };
+  document.getElementById('bluefood').onclick = function () {
     const newState = stateControl(blueFood);
     document.getElementById('soil-value').innerText = `Soil: ${newState.soil}`;
+  };
+  document.getElementById('hydrate').onclick = function () {
+    const newState = stateControl(hydrate);
+    document.getElementById('water-value').innerText = `Water: ${newState.water}`;
+  };
+  document.getElementById('superWater').onclick = function () {
+    const newState = stateControl(superWater);
+    document.getElementById('water-value').innerText = `Water: ${newState.water}`;
   };
 
   // This function doesn't actually do anything useful in this application 
