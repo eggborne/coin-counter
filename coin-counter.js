@@ -156,3 +156,95 @@ const rgr = x => {
 }
 
 const rgr2 = x => x === 0 ? "" : rgr(x - 1) + 'red green refactor ';
+
+
+// MODAY LESSON ////////////////////////////////////////////
+
+// Create a reusable function that we can use to hydrate(), feed() and giveLight() to a plant. 
+// Specifically, we will create a pure function that isn't in a class. Because it will be pure, it will have:
+
+// No side effects
+// No state mutation
+// A return value
+
+const hydrate1 = (plant) => {
+  return {
+    ...plant,
+    water: (plant.water || 0) + 1
+  }
+};
+
+const feed1 = (plant) => {
+  return {
+    ...plant,
+    soil: (plant.soil || 0) + 1
+  }
+};
+
+// combine feed/plant:
+
+const changePlantState = (plant, property) => {
+  return {
+    ...plant,
+    [property]: (plant[property] || 0) + 1
+  }
+}
+
+const changeState1 = (state, prop, value) => ({
+  ...state,
+  [prop] : (state[prop] || 0) + value
+})
+
+// curried:
+
+const changeState = (prop) => {
+  return (value) => {
+    return (state) => ({
+      ...state,
+      [prop] : (state[prop] || 0) + value
+    })
+  }
+}
+
+const feed = changeState("soil");
+const hydrate = changeState("water");
+const giveLight = changeState("light");
+
+feed(5)(plant);
+
+const blueFood = changeState("soil")(5);
+const greenFood = changeState("soil")(10);
+const yuckyFood = changeState("soil")(-5);
+
+blueFood(plant);
+
+// Our function is pure, does not mutate state, and has no side effects
+// Our function is unary and takes only one argument
+// Our function uses currying, which allows us to reuse it as a function factory
+// Our function takes advantage of closures (because we wouldn't be able to curry without it)
+// Our function is sufficiently abstracted that it could be used with other types of objects that could be incremented or decremented as well
+
+// STORING STATE IN A FUNCTION
+
+const storeState = () => {
+  let currentState = {};
+  return (stateChangeFunction = state => state) => {
+    const newState = stateChangeFunction(currentState);
+    currentState = {...newState};
+    return newState;
+  }
+}
+
+// The only job of the outer function is to store the currentState of an object
+// The currentState of an object will be initialized as a {}
+// Our outer function returns an anonymous inner function that takes one parameter called stateChangeFunction. This inner function will take a function as an argument
+// The line const newState = stateChangeFunction(currentState); will take the function we pass in as an argument and then call it on currentState
+// Instead of mutating currentState, we will save the new state in a constant called newState
+// We will make a copy of newState and assign it to currentState
+// (similar to what React does with its setState() method)
+// Finally, our inner function will return the newState
+
+const stateControl = storeState();
+ // Here, we are actually invoking the storeState() function and creating a closure over the currentState variable in the outer function
+
+ const fedPlant = stateControl(blueFood);
