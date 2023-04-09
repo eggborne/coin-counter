@@ -1,3 +1,5 @@
+// COIN COUNTER
+
 const coinValues = [
   { coinType: "quarter", coinValue: 25 },
   { coinType: "dime", coinValue: 10 },
@@ -17,7 +19,7 @@ const countCoinsReduce = totalCents => {
   }, {});
 
   return coinCounts;
-}
+};
 
 // recursion
 
@@ -46,15 +48,15 @@ function countCoinsRecursion(cents) {
     }
     return coins;
   }
-}
+};
 
-// closure
+// closure??
 
 const countCoins = (totalCents) => {
   return (coinValue) => {
     return Math.floor(totalCents / coinValue);
   }
-}
+};
 
 const countTotalCoins = totalCents => {
   const coinAmounts = {};
@@ -66,6 +68,91 @@ const countTotalCoins = totalCents => {
   });
 
   return coinAmounts;
+};
+
+// SIEVE OF ERATOSTHENES
+
+const removeMultiples = (arr, mult) => {
+  return arr.filter(num => (num % mult) !== 0);
+};
+
+const getPrimesToN = n => {
+  let primes = [...Array(n).keys()].slice(2, n);
+  for (let i = 0; i < primes.length; i++) {
+    primes = removeMultiples(primes, primes[i]);
+  }
+  return primes;
+};
+
+
+// WHITEBOARD: CLOSURES
+
+// Use a closure to create multiple functions for adding a prefix to a name.
+
+const addPrefix = prefix => {
+  return name => {
+    return `${prefix} ${name}`;
+  };
+};
+
+const addPrefix2 = prefix => name => `${prefix} ${name}`;
+
+// Use a closure to create multiple functions for making various animal noises.
+
+const soundMaker = sound => {
+  return () => {
+    return `${sound.toUpperCase()}!!`;
+  };
+};
+
+const soundMaker2 = sound => () => `${sound.toUpperCase()}!!`;
+
+// Use closures to create multiple functions for adding both a prefix and a suffix to a name.
+
+const nameEnhancer = prefix => {
+  return suffix => {
+    return name => {
+      return `${prefix} ${name} ${suffix}`;
+    };
+  };
+};
+
+const nameEnhancer2 = prefix => suffix => name => `${prefix} ${name} ${suffix}`;
+
+// Use closures to create multiple functions to first add to and then multiply a value.
+
+const addaMult = toAdd => {
+  return toMult => {
+    return num => {
+      return (num + toAdd) * toMult;
+    }
+  }
 }
 
+const addaMult2 = toAdd => toMult => num => (num + toAdd) * toMult;
 
+
+// WHITEBOARD: RECURSION
+
+// Write a recursive function that reverses the order of words in a sentence.
+
+const reverseSentence = (sentence) => {
+  if (sentence === "") {
+    return "";
+  } else {
+    sentence = sentence.split(' ');
+    return (reverseSentence(sentence.slice(1, sentence.length).join(' ')) + ' ' + sentence[0]).trim();
+  }
+}
+
+// Write a recursive function that concatenates "red green refactor" to a string X number of times, where X is the argument passed into the function.
+
+const rgr = x => {
+  if (x === 0) {
+    return "";
+  } else {
+    return rgr(x - 1) + 'red green refactor ';
+  }
+}
+
+const rgr2 = x => x === 0 ? "" : rgr(x - 1) + 'red green refactor ';
